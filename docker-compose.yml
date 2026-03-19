@@ -1,0 +1,27 @@
+version: "3.9"
+
+services:
+
+  web:
+    build: .
+    container_name: php_sqli_lab
+    ports:
+      - "8082:80"
+    volumes:
+      - ./app:/var/www/html
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8
+    container_name: mysql_sqli_lab
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: lab
+      MYSQL_USER: labuser
+      MYSQL_PASSWORD: labpass
+    ports:
+      - "3307:3306"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
